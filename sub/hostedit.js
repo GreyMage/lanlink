@@ -2,7 +2,6 @@ var hostedit = {}
 var util = require("util");
 var os = require("os");
 var fs = require("fs");
-String.prototype.trim=function(){return this.replace(/^\s+|\s+$/g, '');};
 
 hostedit.addEntry = function(ops){
 	//ops contains address and name.
@@ -14,7 +13,7 @@ hostedit.addEntry = function(ops){
 
 		if (err) throw err;
 		for(var line in data){
-			line = data[line].trim();
+			line = data[line].replace(/\n$/, '').replace(/\r$/, '');
 			var match = line.match(llEntryRegex);
 			if(match){
 				if(match[2] == ops.name){
@@ -26,7 +25,7 @@ hostedit.addEntry = function(ops){
 					dout += (match[1]+" "+match[2]+" #LANLINK")+"\n";
 				}
 			} else {
-				dout += line+"\n";
+				if(line.length > 0) dout += line+"\n";
 			}
 		}
 		
